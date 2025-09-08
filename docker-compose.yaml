@@ -1,6 +1,10 @@
 services:
   chyrp-lite:
-    build: .
+    image: gutenye/chyrp-lite
+    build:
+      platforms:
+        - linux/arm64   
+        - linux/amd64
     container_name: chyrp-lite
     restart: unless-stopped
     volumes:
@@ -8,6 +12,8 @@ services:
       - uploads:/var/www/html/uploads
     ports:
       - 127.0.0.1:8080:80
+    depends_on:
+      - mysql
 
 # Use SQLite if don't know which database to choose. Set the database path to
 # "/data/db.sqlite" during install. If you need PostgreSQL or MySQL,
@@ -24,17 +30,18 @@ services:
 #      POSTGRES_USER: chyrp-lite
 #      POSTGRES_PASSWORD: <password>
 
-#  mysql:
-#    image: mysql
-#    restart: unless-stopped
-#    volumes:
-#      - db:/var/lib/mysql
-#    environment:
-#      MYSQL_DATABASE: chyrp-lite
-#      MYSQL_USER: chyrp-lite
-#      MYSQL_PASSWORD: <password>
+  mysql:
+    image: mysql
+    restart: unless-stopped
+    volumes:
+      - db:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: app
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: password
 
 volumes:
   data:
   uploads:
-  #db:
+  db:

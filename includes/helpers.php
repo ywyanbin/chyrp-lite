@@ -3472,7 +3472,7 @@
 
         $match[1] = isset($scheme) ?
             $scheme :
-            oneof($match[1], "http://") ;
+            oneof($match[1], "https://") ;
 
         return $url = $match[1].$match[2];
     }
